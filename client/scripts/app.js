@@ -5,12 +5,10 @@ app.init = function() {
     app.$main = $('#main');
   app.$chats = $('#chats');
   app.server = 'http://parse.atx.hackreactor.com/chatterbox/classes/messages';
-  
+ 
   $('#msgForm').on('submit', function(event) {
     event.preventDefault();
-    console.log(event.name)
     app.send();
-    app.fetch();
   });
   app.fetch();
 }
@@ -28,11 +26,11 @@ app.send = function(message) {
       }
     });
 }
-app.fetch = function(message) {
+app.fetch = function() {
     $.ajax({
       url: app.server,
       type: 'GET',
-      data: message,
+      //data: message,
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message retrieved');
@@ -46,8 +44,8 @@ app.clearMessages = function() {
     app.$chats.children().remove();
 };
 app.renderMessage = function(message) {
+    app.$chats.children().append(message.value);
 };
 app.renderRoom = function(room) {
     
 };
-
