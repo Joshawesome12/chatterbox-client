@@ -1,89 +1,189 @@
-// PROTOTYPAL
-// YOUR CODE HERE:
-
 var app = {
-  server: 'http://parse.atx.hackreactor.com/chatterbox/classes/messages',
-  $chats: $('#chats')
-};
-app.init = function() {
-  $('#msgForm').on('submit', function(event) {
-    console.log('app.server', app.server);
-    event.preventDefault();
-    app.send();
-  });
-  app.fetch();
-};
-app.send = function(message) {
-  console.log(message);
-  $.ajax({
-    url: this.server,
-    type: 'POST',
-    data: message,
-    contentType: 'application/json',
-    success: function (data) {
-      console.log('chatterbox: Message sent');
-    },
-    error: function (data) {
-      console.error('chatterbox: Failed to send message', data);
-    }
-  });
-};
-app.fetch = function() {
-  $.ajax({
-    url: this.server,
-    type: 'GET',
-    data: {"order":"-createdAt"},
-    contentType: 'application/json',
-    success: function (data) {
-      console.log('chatterbox: Message retrieved');
-      console.log('data', data);
-    },
-    error: function (data) {
-      console.error('chatterbox: Failed to fetch message', data);
-    }
-  });
-};
-app.clearMessages = function() {
-  this.$chats.children().remove();
-};
-app.renderMessage = function(message) {
-  this.$chats.children().append(message.value);
-};
-app.renderRoom = function(room) {
+ server:'http://parse.atx.hackreactor.com/chatterbox/classes/messages',
+ username: 'Josh',
+ roomame: 'lobby',
+
+
+  init: function() {
+    //get username
+    app.username = window.location.search.substr(10);
+
+    //cache jQuery selectors
+    app.$message = $('#message');
+    app.$chat = $('#chats');
+    app.$roomSelect = $('#roomSelect');
+    app.$send = $('#send');
+  },
+
+  fetch: function(){
+    $.ajax({
+      url: app.server,
+      type: 'GET',
+      success: function(){
+        console.log('success');
+      },
+      error: function(){
+        console.log('error');
+      }
+    })
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// pre solution video
+// // PROTOTYPAL
+// // YOUR CODE HERE:
+
+// var app = {
+//   server: 'http://parse.atx.hackreactor.com/chatterbox/classes/messages',
+//   $chats: $('#chats')
+// };
+// app.init = function() {
+//   $('#msgForm').on('submit', function(event) {
+//     console.log('app.server', app.server);
+//     event.preventDefault();
+//     app.send();
+//   });
+//   app.fetch();
+// };
+// app.send = function(message) {
+//   console.log(message);
+//   $.ajax({
+//     url: this.server,
+//     type: 'POST',
+//     data: message,
+//     contentType: 'application/json',
+//     success: function (data) {
+//       console.log('chatterbox: Message sent');
+//     },
+//     error: function (data) {
+//       console.error('chatterbox: Failed to send message', data);
+//     }
+//   });
+// };
+// app.fetch = function() {
+//   $.ajax({
+//     url: this.server,
+//     type: 'GET',
+//     data: {"order":"-createdAt"},
+//     contentType: 'application/json',
+//     success: function (data) {
+//       console.log('chatterbox: Message retrieved');
+//       console.log('data', data);
+//     },
+//     error: function (data) {
+//       console.error('chatterbox: Failed to fetch message', data);
+//     }
+//   });
+// };
+// app.clearMessages = function() {
+//   this.$chats.children().remove();
+// };
+// app.renderMessage = function(message) {
+//   this.$chats.children().append(message.value);
+// };
+// app.renderRoom = function(room) {
     
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// };
 
 
 
