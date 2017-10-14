@@ -1,8 +1,10 @@
+
 var app = {
  server:'http://parse.atx.hackreactor.com/chatterbox/classes/messages',
  username: 'Josh',
- roomame: 'lobby',
-
+ roomname: 'lobby',
+ messages: [],
+ lastMessageId: 0,
 
   init: function() {
     //get username
@@ -10,25 +12,96 @@ var app = {
 
     //cache jQuery selectors
     app.$message = $('#message');
-    app.$chat = $('#chats');
+    app.$chats = $('#chats');
     app.$roomSelect = $('#roomSelect');
     app.$send = $('#send');
+
+    //add listeners
+    app.$send.on('submit', app.handleSubmit);
+
+    //Fetch previous messages on startup
+    app.fetch();
+
+    //Poll for new messages
+    // setInterval(function(){
+    //   app,fetch();
+    // },3000);
   },
 
   fetch: function(){
     $.ajax({
-      url: app.server,
       type: 'GET',
-      success: function(){
+      url: app.server,
+      data: {order: '-createdAt'},
+      success: function(data){
+        //Don't do anything if we have nothing to work with
+        if (!data.results || !data.results.length){return;}
+        //Store messages for caching later
+        app.messages = data.results;
+
+        var mostRecentMessage = app.messages[app.messages.length - 1];
+        //Only bother updating the DOM if we have a new message
+        if (mostRecentMessage.objectId !== app.lastMessageId){
+          app.renderMessages(app.messages);
+        }
         console.log('success');
+        console.dir(data);
       },
-      error: function(){
-        console.log('error');
+      error: function(error){
+        console.error(error);
       }
     })
-  }
+  },
 
-}
+  renderMessages: function(messages){
+    //clear old messages
+    app.clearMessages();
+    //render each individual message
+    messages.forEach(function(message){app.renderMessage(message)});
+  },
+
+  clearMessages: function(){
+    app.$chats.html('');
+  },
+  renderMessage: function(message){
+    // create a div to hold the message
+      var $chat = $('<div class="chat"/>');
+      //add in the message data
+      var $username = $('<span class="username">' + message.username + '</span>');
+      $username.appendTo($chat);
+      
+      var $message = $('<br><span>' + message.text + '</span>');
+      $message.appendTo($chat);
+
+      //add the message to the UI
+      app.$chats.append($chat);
+  },
+
+  handleSubmit: function(event){
+    var message = {
+        username: app.username,
+        text: app.$message.val(),
+        roomname: app.roomname || 'lobby',
+      };
+    //POST a message to the server
+    $.ajax({
+      type: 'POST',
+      url: app.server,
+      data: message,
+      success: function(){
+        //Success? Trigger a fetch to update the messages
+        app.fetch();
+      },
+      error: function(error){
+        //Fail?  Show an error in the console
+        // console.error('chatterbox: failed to send message', error)
+      }
+    });
+    event.preventDefault();
+  },
+
+};
+
 
 
 
