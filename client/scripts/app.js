@@ -2,51 +2,52 @@
 var app = {
 };
 app.init = function() {
-  app.$main = $('#main');
+    app.$main = $('#main');
   app.$chats = $('#chats');
   app.server = 'http://parse.atx.hackreactor.com/chatterbox/classes/messages';
   
   $('#msgForm').on('submit', function(event) {
     event.preventDefault();
-    console.log(event.name);
+    console.log(event.name)
     app.send();
     app.fetch();
   });
   app.fetch();
-};
+}
 app.send = function(message) {
-  $.ajax({
-    url: app.server,
-    type: 'POST',
-    data: message,
-    contentType: 'application/json',
-    success: function (data) {
-      console.log('chatterbox: Message sent');
-    },
-    error: function (data) {
-      console.error('chatterbox: Failed to send message', data);
-    }
-  });
-};
+    $.ajax({
+      url: app.server,
+      type: 'POST',
+      data: message,
+      contentType: 'application/json',
+      success: function (data) {
+        console.log('chatterbox: Message sent');
+      },
+      error: function (data) {
+        console.error('chatterbox: Failed to send message', data);
+      }
+    });
+}
 app.fetch = function(message) {
-  $.ajax({
-    url: app.server,
-    type: 'GET',
-    data: message,
-    contentType: 'application/json',
-    success: function (data) {
-      console.log('chatterbox: Message retrieved');
-    },
-    error: function (data) {
-      console.error('chatterbox: Failed to fetch message', data);
-    }
-  });
-};
+    $.ajax({
+      url: app.server,
+      type: 'GET',
+      data: message,
+      contentType: 'application/json',
+      success: function (data) {
+        console.log('chatterbox: Message retrieved');
+      },
+      error: function (data) {
+        console.error('chatterbox: Failed to fetch message', data);
+      }
+    });
+}
 app.clearMessages = function() {
-  app.$chats.children().remove();
+    app.$chats.children().remove();
 };
 app.renderMessage = function(message) {
 };
 app.renderRoom = function(room) {
     
 };
+
